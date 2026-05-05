@@ -1,0 +1,24 @@
+name: Test
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout latest code
+        uses: actions/checkout@v6
+
+      - name: Set up JVM
+        uses: actions/setup-java@v5
+        with:
+          java-version: 21
+          distribution: temurin
+          cache: gradle
+
+      - name: Test
+        run: sh ./gradlew check --info

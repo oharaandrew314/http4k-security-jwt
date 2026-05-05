@@ -1,0 +1,17 @@
+[versions]
+
+junit = "6.0.3"
+http4k = "6.44.0.0"
+
+[plugins]
+
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version = "2.3.21" }
+maven-publish = { id = "com.vanniktech.maven.publish", version = "0.36.0" }
+
+[libraries]
+
+http4k-security-core = { module = "org.http4k:http4k-security-core", version.ref = "http4k" }
+http4k-testing-kotest = { module = "org.http4k:http4k-testing-kotest", version.ref = "http4k" }
+junit-jupiter = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junit" }
+junit-jupiter-api = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junit" }
+junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher", version.ref = "junit" }
