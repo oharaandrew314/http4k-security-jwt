@@ -1,65 +1,53 @@
-title: http4k JWT security Module
-description: Feature overview of the http4k-security-jwt module
+[![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
-### Installation (Gradle)
+# Http4k-security-jwt
 
-```kotlin
-dependencies {
-    implementation(platform("org.http4k:http4k-bom:5.12.1.0"))
-    implementation("org.http4k:http4k-security-jwt")
-}
-```
+A [nimbus-jose-jwt](https://connect2id.com/products/nimbus-jose-jwt) security plugin for [http4k/http4k](https://www.github.com/http4k/http4k)
+
+### Installation
+
+[![Maven Central Version](https://img.shields.io/maven-central/v/dev.andrewohara/http4k-security-jwt)](https://central.sonatype.com/artifact/dev.andrewohara/http4k-security-jwt)
 
 ### About
 
-`JWTs` are cryptographic access tokens containing easily obtainable information on the `subject` (i.e. user/principal), and can be securely verified with minimal participation from the `login provider`.
-`JWTs` have a limited lifetime, and must be periodically refreshed.
+This module contains the http4k components necessary for a server to validate requests with a JWT bearer token.
 
-They are exceptionally well suited to social login.
-The social `login provider` can cryptographically sign the `JWT` with an asymmetric key, including a confidential private key, and freely available set of rotating public keys.
-Third-party resource servers can cryptographically verify the `JWT` using the public key set, eliminating the need for their own custom `login provider`.
-The public key can be cached for long periods of time, which reduces the burden on the `login provider`, and latency to authorize requests.
+It is NOT a token provider.
 
-At it's most basic, JWT authorization typically works like this:
-
-1. Client authenticates with a `login provider` and is issued a `JWT`
-2. Client can inspect the `JWT` for information on the `subject` (e.g. username, email, photo, etc.)
-3. Client can make a request to a `resource server`, including the `JWT` in the `Authorization` header
-4. Server cryptographically verifies the `JWT` is valid and was issued by one of its trusted `login providers`
-5. Server extracts the `subject` ID from the `JWT`, and uses it to complete the request
-
-This module contains the infrastructure required for a `resource server` to authorize requests containing a `JWT`.
+### Quickstart
 
 
-### Simple Filter [<img class="octocat"/>](https://github.com/http4k/http4k/blob/master/src/docs/guide/reference/jwt/simple_filter.kt)
+```kotlin
+fun main() {
+    // generate a new RSA key pair
+    val rsa = RsaProvider("exampleServer")
 
-This minimal example will authorize any request with a valid JWT.
+    // authorize requests using the RSA public key
+    val authorizer = JwtAuthorizer(
+        keySelector = SingleKeyJWSKeySelector(JWSAlgorithm.RS256, rsa.publicKey),
+        lookup = { it.subject } // The principal is the JWT's subject
+    )
 
-<script src="https://gist-it.appspot.com/https://github.com/http4k/http4k/blob/master/src/docs/guide/reference/jwt/simple_filter.kt"></script>
+    // Build a server protected by the JwtAuthorizer
+    val http = ServerFilters.JwtAuth(authorizer)
+        .then { _: Request -> Response(OK) }
 
-### Advanced Filter  [<img class="octocat"/>](https://github.com/http4k/http4k/blob/master/src/docs/guide/reference/jwt/advanced_filter.kt)
+    // requests without a valid JWT will be rejected
+    val unauthorizedRequest = Request(GET, "/")
+        .header("Authorization", "Bearer letmein")
 
-This example will display some of the more advanced capabilities:
+    println("Invalid JWT should be unauthorized:")
+    println(http(unauthorizedRequest))
 
-- Transform Subject into any principal type
-- Perform additional verification on the subject
-- Inject verified subject into a `RequestContextLens`
+    // requests with a valid JWT will be allowed
+    val authorizedRequest = Request(GET, "/")
+        .header("Authorization", "Bearer ${rsa.generate("user1")}")
 
-<script src="https://gist-it.appspot.com/https://github.com/http4k/http4k/blob/master/src/docs/guide/reference/jwt/advanced_filter.kt"></script>
+    println("Valid JWT should be successful:")
+    println(http(authorizedRequest))
+}
+```
 
-### Testability [<img class="octocat"/>](https://github.com/http4k/http4k/blob/master/src/docs/guide/reference/jwt/testability.kt)
+### Examples
 
-For apps that use a remote JWK to load public keys, it may be common for tests to replace the JWK with a local key.
-However, this requires injecting fake components into the app factory method.
-This module provides a universal component that can retrieve a JWK from both a real and fake server.
-
-The `http4kJwsKeySelector` requires you to inject the internet as an `HttpHandler`, which can be faked to return an in-memory JWK.
-With this component, the only difference between a test and production app is the internet that you inject.
-
-<script src="https://gist-it.appspot.com/https://github.com/http4k/http4k/blob/master/src/docs/guide/reference/jwt/testability.kt"></script>
-
-### Contract Security  [<img class="octocat"/>](https://github.com/http4k/http4k/blob/master/src/docs/guide/reference/jwt/security.kt)
-
-There is also support for `http4k-contract` with the `JwkSecurity` class.
-
-<script src="https://gist-it.appspot.com/https://github.com/http4k/http4k/blob/master/src/docs/guide/reference/jwt/security.kt"></script>
+[Examples Directory](https://github.com/oharaandrew314/http4k-security-jwt/tree/main/examples)
