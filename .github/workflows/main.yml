@@ -23,8 +23,9 @@ jobs:
           cache: gradle
 
       - name: Test
-        run: sh ./gradlew check --info
+        run: ./gradlew check --no-configuration-cache --info
   publish:
+    needs: [ test ]
     runs-on: ubuntu-latest
     if: github.event_name == 'release'
     steps:
@@ -39,7 +40,7 @@ jobs:
           cache: gradle
 
       - name: Publish to Maven Central
-        run: ./gradlew publish --info
+        run: ./gradlew publish --no-configuration-cache --info
         env:
           ORG_GRADLE_PROJECT_VERSION_NAME: ${{ github.event.release.tag_name }}
           ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.central_username }}
