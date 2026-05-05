@@ -12,6 +12,11 @@ maven-publish = { id = "com.vanniktech.maven.publish", version = "0.36.0" }
 
 http4k-security-core = { module = "org.http4k:http4k-security-core", version.ref = "http4k" }
 http4k-testing-kotest = { module = "org.http4k:http4k-testing-kotest", version.ref = "http4k" }
+http4k-api-openapi = { module = "org.http4k:http4k-api-openapi", version.ref = "http4k" }
+http4k-testing-approval = { module = "org.http4k:http4k-testing-approval", version.ref = "http4k" }
+http4k-config = { module = "org.http4k:http4k-config", version.ref = "http4k" }
+http4k-server-jetty = { module = "org.http4k:http4k-server-jetty", version.ref = "http4k" }
 junit-jupiter = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junit" }
 junit-jupiter-api = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junit" }
 junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher", version.ref = "junit" }
+nimbus-jose-jwt = { module = "com.nimbusds:nimbus-jose-jwt", version = "10.9" }
