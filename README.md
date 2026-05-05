@@ -50,4 +50,4 @@ fun main() {
 
 ### Examples
 
-[Examples Directory](https://github.com/oharaandrew314/http4k-security-jwt/tree/main/examples)
+[Examples Directory](https://github.com/oharaandrew314/http4k-security-jwt/tree/main/src/examples/kotlin)
