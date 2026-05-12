@@ -1,7 +1,7 @@
 [versions]
 
 junit = "6.0.3"
-http4k = "6.44.0.0"
+http4k = "6.46.1.0"
 
 [plugins]
 
