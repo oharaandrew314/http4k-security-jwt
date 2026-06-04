@@ -5,7 +5,7 @@ http4k = "6.44.0.0"
 
 [plugins]
 
-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version = "2.3.21" }
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version = "2.4.0" }
 maven-publish = { id = "com.vanniktech.maven.publish", version = "0.36.0" }
 
 [libraries]
