@@ -19,4 +19,4 @@ http4k-server-jetty = { module = "org.http4k:http4k-server-jetty", version.ref =
 junit-jupiter = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junit" }
 junit-jupiter-api = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junit" }
 junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher", version.ref = "junit" }
-nimbus-jose-jwt = { module = "com.nimbusds:nimbus-jose-jwt", version = "10.9" }
+nimbus-jose-jwt = { module = "com.nimbusds:nimbus-jose-jwt", version = "10.9.1" }
